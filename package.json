@@ -1,0 +1,14 @@
+{
+  "name": "tt",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx cypress open"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cypress": "^13.12.0"
+  }
+}
