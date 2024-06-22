@@ -24,7 +24,7 @@ describe('Snapshot first tests', () => {
     cy.execAnyScriptSQL(nomeScriptSQL2, nomeBanco2);
   });
 
-  it('restore Backup', () => {
+  it('Restore from Backup', () => {
     cy.restoreDb();
   });
 
@@ -33,30 +33,57 @@ describe('Snapshot first tests', () => {
     cy.execAnyScriptSQL(nomeScriptSQL);
   });
 
-  it('createSnapshot', () => {
-    const nomeScriptSQL = 'createSnapshot.sql';
-    const nomeBanco = 'TESTE';
-    const nomeSnapshot = 'adv_dbss';
-
-    cy.execAnyScriptSQL(nomeScriptSQL, nomeBanco, nomeSnapshot);
+  it('Criação dos snapshots', () => {
+    cy.createSnapshots();
   });
 
-  it('restoreSnapshot', () => {
-    const nomeScriptSQL = 'restoreSnapshot.sql';
-    const nomeBanco = 'TESTE';
-    const nomeSnapshot = 'adv_dbss';
-    // const nomeSnapshot = Cypress.env('nomeSnapshot');
-    // const nomeBanco = 'adv_dbss1';
-    // const nomeSnapshot = 'adv_dbss1';
-
-    cy.execAnyScriptSQL(nomeScriptSQL, nomeBanco, nomeSnapshot);
+  it('Restore from snapshot', () => {
+    cy.restoreSnapshot();
   });
 
-  it('dropSnapshot', () => {
-    const nomeScriptSQL = 'dropSnapshot.sql'
-    const nomeBanco = 'TESTE';
-    const nomeSnapshot = 'adv_dbss';
+  it('Drop snapshot', () => {
+    cy.dropSnapshot();
+  });
 
-    cy.execAnyScriptSQL(nomeScriptSQL, nomeBanco, nomeSnapshot);
+  it('Test snapshots life cicle', () => {
+    cy.step('View before create snapshot')
+    const nomeScriptSQL = 'viewDB.sql';
+    cy.execAnyScriptSQL(nomeScriptSQL)
+      .should((result) => {
+        expect(result.stdout).contain('TESTE');
+        expect(result.stdout).not.contain('adv_dbss');
+      });
+
+    cy.step('Create a snapshot');
+    cy.createSnapshots()
+      .should((result) => {
+        expect(result.stdout).contain('SUCCESS CREATE');
+      });
+
+    cy.step('View after create snapshot');
+    cy.execAnyScriptSQL(nomeScriptSQL)
+      .should((result) => {
+        expect(result.stdout).contain('TESTE');
+        expect(result.stdout).contain('adv_dbss');
+      });
+
+    cy.step('Restore snapshot');
+    cy.restoreSnapshot()
+      .should((result) => {
+        expect(result.stdout).contain('SUCCESS RESTORE');
+      });;
+
+    cy.step('Drop snapshot');
+    cy.dropSnapshot()
+      .should((result) => {
+        expect(result.stdout).contain('SUCCESS DROP');
+      });;
+
+    cy.step('View after create snapshot');
+    cy.execAnyScriptSQL(nomeScriptSQL)
+      .should((result) => {
+        expect(result.stdout).contain('TESTE');
+        expect(result.stdout).not.contain('adv_dbss');
+      });
   });
 });
