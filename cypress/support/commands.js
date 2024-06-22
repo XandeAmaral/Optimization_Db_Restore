@@ -3,9 +3,9 @@ Cypress.Commands.add('restoreDb', () => {
   cy.execShellScript(nomeScriptSH);
 });
 
-Cypress.Commands.add('execAnyScriptSQL', (nomeScriptSQL, nomeBanco = "") => {
+Cypress.Commands.add('execAnyScriptSQL', (nomeScriptSQL, nomeBanco = "", ...params) => {
   const nomeScriptSH = "execAnyScriptSQL.sh";
-  cy.execShellScript(nomeScriptSH, nomeScriptSQL, nomeBanco);
+  cy.execShellScript(nomeScriptSH, nomeScriptSQL, nomeBanco, params);
 });
 
 Cypress.Commands.add('execShellScript', (nomeScriptSH, nomeScriptSQL = "", nomeBanco = "", ...params) => {
