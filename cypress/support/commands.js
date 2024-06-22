@@ -1,17 +1,22 @@
 Cypress.Commands.add('restoreDb', () => {
-  cy.exec(`chmod +x cypress/scripts/restoreBd.sh && cypress/scripts/restoreBd.sh`,
-    { failOnNonZeroExit: false })
-    .then((result) => {
-      cy.log(result.stdout);
-      cy.log(result.stderr);
-    })
+  const nomeScriptSH = "restoreDb.sh";
+  cy.execShellScript(nomeScriptSH);
 });
 
-Cypress.Commands.add('execAnyScript', (nomeArquivoSQL) => {
-  cy.exec(`chmod +x cypress/scripts/teste2.sh && cypress/scripts/teste2.sh ${nomeArquivoSQL}`,
+Cypress.Commands.add('execAnyScriptSQL', (nomeScriptSQL, nomeBanco = "") => {
+  const nomeScriptSH = "execAnyScriptSQL.sh";
+  cy.execShellScript(nomeScriptSH, nomeScriptSQL, nomeBanco);
+});
+
+Cypress.Commands.add('execShellScript', (nomeScriptSH, nomeScriptSQL = "", nomeBanco = "", ...params) => {
+
+  const paramsString = params.join(' ');
+
+  cy.exec(`chmod +x cypress/scripts/${nomeScriptSH} \
+    && cypress/scripts/${nomeScriptSH} ${nomeScriptSQL} ${nomeBanco} ${paramsString}`,
     { failOnNonZeroExit: false })
     .then((result) => {
       cy.log(result.stdout);
       cy.log(result.stderr);
-    })
+    });
 });
