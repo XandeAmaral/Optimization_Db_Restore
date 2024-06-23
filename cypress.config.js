@@ -16,10 +16,10 @@ module.exports = defineConfig({
             arquivo = 'timeBk.json';
           };
 
-          // Caminho em que está o arquivo Json que armazena os valores
+          // Caminho do arquivo JSON que armazena os valores
           const filePath = path.join(__dirname, 'cypress', 'results', arquivo);
 
-          // Variavel para armazenar os resultados da leitura do arquivo
+          // Variável para armazenar os resultados da leitura do arquivo
           let timings = [];
 
           // Processo de ler o arquivo
@@ -48,7 +48,11 @@ module.exports = defineConfig({
             return { error: 'Erro ao escrever no arquivo timings.json' };
           }
 
-          return { success: true };
+          // Calcular a média
+          const soma = timings.reduce((total, valor) => total + valor, 0);
+          const media = soma / timings.length;
+
+          return { success: true, media: media, type: type };
         },
       });
     },
