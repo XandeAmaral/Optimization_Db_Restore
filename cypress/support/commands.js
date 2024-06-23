@@ -18,7 +18,7 @@ Cypress.Commands.add('execAnyScriptSQL', (nomeScriptSQL, nomeBanco = "", ...para
 
 // Restore from backup
 
-Cypress.Commands.add('restoreDb', () => {
+Cypress.Commands.add('restoreBackup', () => {
   const nomeScriptSQL = "restoreBackup.sql";
 
   cy.execAnyScriptSQL(nomeScriptSQL);
@@ -46,3 +46,26 @@ Cypress.Commands.add('dropSnapshot', () => {
 
   cy.execAnyScriptSQL(nomeScriptSQL, nomeBanco, nomeSnapshot);
 });
+
+// Insert data in dtb
+
+Cypress.Commands.add('insertDatas', () => {
+  const nomeScriptSQL = 'insertDatas.sql';
+
+  cy.execAnyScriptSQL(nomeScriptSQL, nomeBanco, nomeSnapshot);
+});
+
+Cypress.Commands.add('insertDatas_2', () => {
+  const nomeScriptSQL = 'littleDatas.sql';
+
+  cy.execAnyScriptSQL(nomeScriptSQL, nomeBanco, nomeSnapshot);
+});
+
+Cypress.Commands.add('insertDatas_3', () => {
+  const nomeScriptSQL = 'insertDatas2.sql';
+
+  cy.execAnyScriptSQL(nomeScriptSQL, nomeBanco, nomeSnapshot);
+});
+
+
+// Input the timing result in the json
