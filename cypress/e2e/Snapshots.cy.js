@@ -25,7 +25,7 @@ describe('Snapshot first tests', () => {
   });
 
   it('Restore from Backup', () => {
-    cy.restoreDb();
+    cy.restoreBackup();
   });
 
   it('viewDB', () => {
