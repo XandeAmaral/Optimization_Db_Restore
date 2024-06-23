@@ -20,8 +20,26 @@ Cypress.Commands.add('execAnyScriptSQL', (nomeScriptSQL, nomeBanco = "", ...para
 
 Cypress.Commands.add('restoreBackup', () => {
   const nomeScriptSQL = "restoreBackup.sql";
+  let inicio;
+
+  cy.wrap('', { log: false }).then(() => {
+    inicio = performance.now();
+  });
 
   cy.execAnyScriptSQL(nomeScriptSQL);
+
+  cy.wrap('').then(() => {
+    const fim = performance.now();
+    const result = fim - inicio;
+
+    cy.task('writeTiming', { result, type: 'backup' }).then((response) => {
+      if (response.error) {
+        console.error(response.error);
+      } else {
+        console.log(`A média dos tempos de ${response.type} é de ${response.media} milissegundos`);
+      }
+    });
+  });
 });
 
 // Snapshots
@@ -37,8 +55,26 @@ Cypress.Commands.add('createSnapshots', () => {
 
 Cypress.Commands.add('restoreSnapshot', () => {
   const nomeScriptSQL = 'restoreSnapshot.sql';
+  let inicio;
+
+  cy.wrap('', { log: false }).then(() => {
+    inicio = performance.now();
+  });
 
   cy.execAnyScriptSQL(nomeScriptSQL, nomeBanco, nomeSnapshot);
+
+  cy.wrap('', { log: false }).then(() => {
+    const fim = performance.now();
+    const result = fim - inicio;
+
+    cy.task('writeTiming', { result, type: 'snapshot' }).then((response) => {
+      if (response.error) {
+        console.error(response.error);
+      } else {
+        console.log(`A média dos tempos de ${response.type} é de ${response.media} milissegundos`);
+      }
+    });
+  });
 });
 
 Cypress.Commands.add('dropSnapshot', () => {

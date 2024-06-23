@@ -2,7 +2,7 @@ describe('Data analysis', () => {
   let inicio;
   let fim;
 
-  Cypress._.times(1, () => {
+  Cypress._.times(10, () => {
     context('Testes performance inserindo dados', () => {
       it('Restore from Backup', () => {
         cy.step('Drop snapshots');
@@ -14,25 +14,7 @@ describe('Data analysis', () => {
         cy.insertDatas_3();
 
         cy.step('Restore backup');
-        cy.wrap('', { log: false }).then(() => {
-          inicio = performance.now();
-        });
-
         cy.restoreBackup();
-
-        cy.wrap('').then(() => {
-          fim = performance.now();
-          const result = fim - inicio;
-
-          cy.task('writeTiming', { result, type: 'backup' }).then((response) => {
-            if (response.error) {
-              console.error(response.error);
-            } else {
-              console.log('Tempo registrado com sucesso');
-              console.log(`A média dos tempos de ${response.type} é de ${response.media} milissegundos`);
-            }
-          });
-        });
       });
 
       it('Restore from snapshots', () => {
@@ -45,25 +27,7 @@ describe('Data analysis', () => {
         cy.insertDatas_3();
 
         cy.step('Restore snapshot');
-        cy.wrap('', { log: false }).then(() => {
-          inicio = performance.now();
-        });
-
         cy.restoreSnapshot();
-
-        cy.wrap('', { log: false }).then(() => {
-          fim = performance.now();
-          const result = fim - inicio;
-
-          cy.task('writeTiming', { result, type: 'snapshot' }).then((response) => {
-            if (response.error) {
-              console.error(response.error);
-            } else {
-              console.log('Tempo registrado com sucesso');
-              console.log(`A média dos tempos de ${response.type} é de ${response.media} milissegundos`);
-            }
-          });
-        });
       });
     });
   });
