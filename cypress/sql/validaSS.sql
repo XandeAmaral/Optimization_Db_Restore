@@ -1,0 +1,1 @@
+select AddressID, AddressLine1 from Person.Address where AddressID = 1
