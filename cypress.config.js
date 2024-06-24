@@ -3,9 +3,10 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = defineConfig({
+  defaultCommandTimeout: 60000,
+
   e2e: {
     setupNodeEvents(on, config) {
-
 
       on('task', {
         writeTiming({ result, type }) {
