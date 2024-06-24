@@ -1,0 +1,3 @@
+# testes
+cypress/results/timings.json
+cypress/e2e/teste.cy.js
